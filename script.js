@@ -12,18 +12,17 @@ let service1;
 let service2;
 
 const isNumber = function (num) {
-   return !isNaN(parseFloat(num)) && isFinite(num)
+   return !isNaN(parseFloat(num)) && isFinite(num) // лучшая проверка на число. Проверяет введено ли не действительное число, если да то возвращает true.
 }
 
 const asking = function () {
    title = prompt('Как называется ваш проект?', 'Калькулятор вёрстки');
    screens = prompt('Какие типы экранов нужно разработать?', 'Простые, Сложные, Интерактивные ');
-
-   screenPrice = prompt('Сколько будет стоить данная работа ?');
-
-   while (!isNumber(screenPrice)) {
+   // цикл do while выведет окно с вопросомю
+   do {
       screenPrice = prompt('Сколько будет стоить данная работа ?');
    }
+   while (!isNumber(screenPrice)) //знак отрицания переварачивает isNumber т.е. если введено не действительное число, то вернётся false и цикл продолжится по кругу, пока не получит true.
 
    adaptive = confirm('Нужен ли адаптив на сайте?');
 }
@@ -42,7 +41,10 @@ const getAllServicePrices = function () {
       } else if (i === 1) {
          service2 = prompt('Какой дополнительный тип услуги нужен?', 'Отправка форм');
       }
-      sum += +prompt('Сколько это будет стоить?', '5000')
+      do {
+         sum += +prompt('Сколько это будет стоить?', '5000')
+      }
+      while (!isNumber(sum))
    }
    return sum
 };
