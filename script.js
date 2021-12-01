@@ -1,37 +1,64 @@
 let title = prompt('Как называется ваш проект?');
 let screens = prompt('Какие типы экранов нужно разработать?', 'Простые, Сложные, Интерактивные ')
 let screenPrice = +prompt('Сколько будет стоить данная работа ?', '15000')
-let rollback = 9
-let adaptive = !!prompt('Нужен ли адаптив на сайте?')
+let rollback = 5
+let adaptive = confirm('Нужен ли адаптив на сайте?')
 let service1 = prompt('Какой дополнительный тип услуги нужен?', 'service1')
 let servicePrice1 = +prompt('Сколько это будет стоить?', '5000')
 let service2 = prompt('Какой дополнительный тип услуги нужен?', 'service2')
 let servicePrice2 = +prompt('Сколько это будет стоить?', '6000')
 let fullPrice = screenPrice + servicePrice1 + servicePrice2
-let servicePercentPrice = Math.ceil(fullPrice - 4000) //округляем в большую сторону
+let servicePercentPrice = fullPrice - (fullPrice * (rollback / 100))
 
-if (fullPrice >= 30000) {
-   console.log('Даем скидку в 10 %');
-} else if (15000 < fullPrice && fullPrice < 30000) {
-   console.log('Даем скидку в 5 %');
-} else if (0 < fullPrice && fullPrice <= 15000) {
-   console.log('Скидка не предусмотрена');
-} else if (0 > fullPrice) {
-   console.log('Что то пошло не так');
-};
+const showTypeOf = function (variable) {
+   console.log(variable, typeof variable);
+}
 
-console.log(typeof title);
-console.log(typeof fullPrice);
-console.log(typeof adaptive);
-console.log(screens.length);
-console.log(screenPrice);
-console.log(fullPrice);
-console.log(screens.toLowerCase());
+// Функция возвращает сумму всех дополнительных услуг.
+const getAllServicePrices = function (sp1, sp2) {
+   return sp1 + sp2
+}
+allServicePrices = getAllServicePrices(servicePrice1, servicePrice2)
+
+
+//Функция возвращает сумму стоимости верстки и стоимости дополнительных услуг
+function getFullPrice(scrPr, allScrPr) {
+   return scrPr + allScrPr
+}
+fullPrice = getFullPrice(screenPrice, allServicePrices)
+
+
+//Функция возвращает title меняя его таким образом: первый символ с большой буквы, остальные с маленькой". Учесть вариант что строка может начинаться с пустых символов. " КаЛьКулятор Верстки"
+let getTitle = function (title) {
+   title = title.trim().toLowerCase();
+   return title[0].toUpperCase() + title.substring(1);
+}
+getTitle(title);
+
+// Функция возвращает итоговую стоимость за вычетом процента отката
+function getServicePercentPrices(fullPrice, rollback) {
+   return fullPrice - (fullPrice * (rollback / 100))
+}
+servicePercentPrice = getServicePercentPrices(fullPrice, rollback);
+
+
+
+const getRollbackMessage = function (price) {
+   if (price >= 30000) {
+      return 'Даем скидку в 10 %';
+   } else if (price >= 15000 && price < 30000) {
+      return 'Даем скидку в 5 %';
+   } else if (price >= 0 && price < 15000) {
+      console.log('Скидка не предусмотрена');
+   } else {
+      console.log('Что то пошло не так');
+   };
+}
+
+showTypeOf(title)
+showTypeOf(screenPrice)
+showTypeOf(adaptive)
+
 console.log(screens.split(','));
-console.log(fullPrice * (rollback / 100));
+console.log(getRollbackMessage(fullPrice));
 console.log(servicePercentPrice);
-
-
-// alert('Здесь любое сообщение в модальном окне');
-
-// console.log('Сообщение в консоль с любым текстом');
