@@ -1,37 +1,106 @@
-let title = prompt('Как называется ваш проект?');
-let screens = prompt('Какие типы экранов нужно разработать?', 'Простые, Сложные, Интерактивные ')
-let screenPrice = +prompt('Сколько будет стоить данная работа ?', '15000')
-let rollback = 9
-let adaptive = !!prompt('Нужен ли адаптив на сайте?')
-let service1 = prompt('Какой дополнительный тип услуги нужен?', 'service1')
-let servicePrice1 = +prompt('Сколько это будет стоить?', '5000')
-let service2 = prompt('Какой дополнительный тип услуги нужен?', 'service2')
-let servicePrice2 = +prompt('Сколько это будет стоить?', '6000')
-let fullPrice = screenPrice + servicePrice1 + servicePrice2
-let servicePercentPrice = Math.ceil(fullPrice - 4000) //округляем в большую сторону
+'use strict'
 
-if (fullPrice >= 30000) {
-   console.log('Даем скидку в 10 %');
-} else if (15000 < fullPrice && fullPrice < 30000) {
-   console.log('Даем скидку в 5 %');
-} else if (0 < fullPrice && fullPrice <= 15000) {
-   console.log('Скидка не предусмотрена');
-} else if (0 > fullPrice) {
-   console.log('Что то пошло не так');
+let title;
+let screens;
+let screenPrice;
+let adaptive;
+let rollback = 10;
+let allServicePrices;
+let fullPrice;
+let servicePercentPrice;
+let service1;
+let service2;
+
+const isNumber = function (num) {
+   return !isNaN(parseFloat(num)) && isFinite(num)
+}
+
+const asking = function () {
+   title = prompt('Как называется ваш проект?', 'Калькулятор вёрстки');
+   screens = prompt('Какие типы экранов нужно разработать?', 'Простые, Сложные, Интерактивные ');
+
+   screenPrice = prompt('Сколько будет стоить данная работа ?');
+
+   while (!isNumber(screenPrice)) {
+      screenPrice = prompt('Сколько будет стоить данная работа ?');
+   }
+
+   adaptive = confirm('Нужен ли адаптив на сайте?');
+}
+
+
+
+
+
+
+// Отвечает за название и стоимость дополнительных услуг.
+const getAllServicePrices = function () {
+   let sum = 0
+   for (let i = 0; i < 2; i++) {
+      if (i === 0) {
+         service1 = prompt('Какой дополнительный тип услуги нужен?', 'Метрика')
+      } else if (i === 1) {
+         service2 = prompt('Какой дополнительный тип услуги нужен?', 'Отправка форм');
+      }
+      sum += +prompt('Сколько это будет стоить?', '5000')
+   }
+   return sum
 };
 
+const showTypeOf = function (variable) {
+   console.log(variable, typeof variable);
+};
+
+//Функция возвращает сумму стоимости верстки и стоимости дополнительных услуг
+const getFullPrice = function () {
+   return screenPrice + allServicePrices
+};
+
+//Функция возвращает title меняя его таким образом: первый символ с большой буквы, остальные с маленькой". Учесть вариант что строка может начинаться с пустых символов. " КаЛьКулятор Верстки"
+let getTitle = function () {
+   return title.trim()[0].toUpperCase() + title.trim().substring(1).toLowerCase();
+};
+
+
+// Функция возвращает итоговую стоимость за вычетом процента отката
+const getServicePercentPrices = function () {
+   return fullPrice - (fullPrice * (rollback / 100))
+};
+
+
+const getRollbackMessage = function (price) {
+   if (price >= 30000) {
+      return 'Даем скидку в 10 %';
+   } else if (price >= 15000 && price < 30000) {
+      return 'Даем скидку в 5 %';
+   } else if (price >= 0 && price < 15000) {
+      console.log('Скидка не предусмотрена');
+   } else {
+      console.log('Что то пошло не так');
+   };
+};
+
+asking();
+allServicePrices = getAllServicePrices();
+fullPrice = getFullPrice();
+servicePercentPrice = getServicePercentPrices();
+title = getTitle();
+
+showTypeOf(title);
+showTypeOf(screenPrice);
+showTypeOf(adaptive);
+
+console.log('allServicePrices', allServicePrices);
+
+console.log(getRollbackMessage(fullPrice));
 console.log(typeof title);
-console.log(typeof fullPrice);
+console.log(typeof screenPrice);
 console.log(typeof adaptive);
+
 console.log(screens.length);
-console.log(screenPrice);
-console.log(fullPrice);
-console.log(screens.toLowerCase());
-console.log(screens.split(','));
-console.log(fullPrice * (rollback / 100));
 console.log(servicePercentPrice);
 
+console.log(screens.split(','));
 
-// alert('Здесь любое сообщение в модальном окне');
-
-// console.log('Сообщение в консоль с любым текстом');
+console.log("Стоимость вёрстки экранов " + screenPrice + " рублей");
+console.log("Стоимость разработки сайта " + fullPrice + " рублей");
