@@ -1,24 +1,28 @@
 let title = prompt('Как называется ваш проект?');
 let screens = prompt('Какие типы экранов нужно разработать?', 'Простые, Сложные, Интерактивные ')
 let screenPrice = +prompt('Сколько будет стоить данная работа ?', '15000')
-let rollback = 5
 let adaptive = confirm('Нужен ли адаптив на сайте?')
+
 let service1 = prompt('Какой дополнительный тип услуги нужен?', 'service1')
 let servicePrice1 = +prompt('Сколько это будет стоить?', '5000')
 let service2 = prompt('Какой дополнительный тип услуги нужен?', 'service2')
 let servicePrice2 = +prompt('Сколько это будет стоить?', '6000')
-let fullPrice = screenPrice + servicePrice1 + servicePrice2
-let servicePercentPrice = fullPrice - (fullPrice * (rollback / 100))
 
-const showTypeOf = function (variable) {
-   console.log(variable, typeof variable);
-}
+let rollback = 10
+let allServicePrices
+let fullPrice
+let servicePercentPrice
 
 // Функция возвращает сумму всех дополнительных услуг.
 const getAllServicePrices = function (sp1, sp2) {
    return sp1 + sp2
 }
 allServicePrices = getAllServicePrices(servicePrice1, servicePrice2)
+
+
+const showTypeOf = function (variable) {
+   console.log(variable, typeof variable);
+}
 
 
 //Функция возвращает сумму стоимости верстки и стоимости дополнительных услуг
