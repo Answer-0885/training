@@ -39,12 +39,15 @@ const getAllServicePrices = function () {
          service2 = prompt('Какой дополнительный тип услуги нужен?', 'Отправка форм');
       }
 
-      do {
-         sum += +prompt('Сколько это будет стоить?', '5000')
-      }
-      while (!isNumber(sum))
+      sum += (function () {
+         let n;
+         do {
+            n = prompt('Сколько это будет стоить?');
+         } while (!isNumber(n));
+         return +n;
+      })();
    }
-   return sum
+   return sum;
 };
 
 
