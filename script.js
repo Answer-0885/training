@@ -19,8 +19,9 @@ const asking = function () {
    title = prompt('Как называется ваш проект?', 'Калькулятор вёрстки');
    screens = prompt('Какие типы экранов нужно разработать?', 'Простые, Сложные, Интерактивные ');
    // цикл do while выведет окно с вопросомю
+
    do {
-      screenPrice = prompt('Сколько будет стоить данная работа ?');
+      screenPrice = +prompt('Сколько будет стоить данная работа ?');
    }
    while (!isNumber(screenPrice)) //знак отрицания переварачивает isNumber т.е. если введено не действительное число, то вернётся false и цикл продолжится по кругу, пока не получит true.
 
@@ -46,6 +47,7 @@ const getAllServicePrices = function () {
          } while (!isNumber(n));
          return +n;
       })();
+
    }
    return sum;
 };
