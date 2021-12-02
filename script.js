@@ -29,9 +29,6 @@ const asking = function () {
 
 
 
-
-
-
 // Отвечает за название и стоимость дополнительных услуг.
 const getAllServicePrices = function () {
    let sum = 0
@@ -41,6 +38,7 @@ const getAllServicePrices = function () {
       } else if (i === 1) {
          service2 = prompt('Какой дополнительный тип услуги нужен?', 'Отправка форм');
       }
+
       do {
          sum += +prompt('Сколько это будет стоить?', '5000')
       }
@@ -49,13 +47,14 @@ const getAllServicePrices = function () {
    return sum
 };
 
+
 const showTypeOf = function (variable) {
    console.log(variable, typeof variable);
 };
 
 //Функция возвращает сумму стоимости верстки и стоимости дополнительных услуг
 const getFullPrice = function () {
-   return screenPrice + allServicePrices
+   return +screenPrice + +allServicePrices
 };
 
 //Функция возвращает title меняя его таким образом: первый символ с большой буквы, остальные с маленькой". Учесть вариант что строка может начинаться с пустых символов. " КаЛьКулятор Верстки"
