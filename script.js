@@ -71,8 +71,10 @@ const appData = {
                price = prompt('Сколько это будет стоить?');
             }
             while (!appData.isNumber(price));
-            appData.services[name] = +price;
+
+            appData.services[name + i] = price;
          }
+         console.log(appData.services);
       }
       circleService()
 
@@ -80,9 +82,12 @@ const appData = {
    },
 
    addPrices: function () {
-      for (let screen of appData.screens) { // цикл расчёта стоимости экранов
-         appData.screenPrice += +screen.price
-      };
+
+      let initialValue = 0;
+      appData.screenPrice = appData.screens.reduce((a, b) => {
+         return a + b.price;
+      }, initialValue);
+
       for (let key in appData.services) {
          appData.allServicePrices += appData.services[key]
       };
