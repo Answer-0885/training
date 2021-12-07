@@ -72,7 +72,7 @@ const appData = {
             }
             while (!appData.isNumber(price));
 
-            appData.services[name + i] = price;
+            appData.services[name + i] = +price;
          }
          console.log(appData.services);
       }
