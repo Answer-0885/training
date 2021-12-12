@@ -121,7 +121,7 @@ const appData = {
       appData.rollback = rangeValue.textContent;
 
       // меняем сумму с учётом отката в зависимости от положения ползунка
-      totalCountRollback.value = appData.fullPrice - (appData.fullPrice * (parseFloat(appData.rollback) / 100));
+      totalCountRollback.value = appData.fullPrice - (appData.fullPrice * (parseInt(appData.rollback) / 100));
    },
 
    addPrices: function () {
