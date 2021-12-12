@@ -7,8 +7,6 @@ const otherItemsNumber = document.querySelectorAll('.other-items.number');
 
 const inputRange = document.querySelector('.rollback input');
 const rangeValue = document.querySelector('.rollback .range-value')
-const inputRangeValue = document.querySelector('.rollback .range-value');
-
 
 const startBtn = document.getElementsByClassName('handler_btn')[0];
 const resetBtn = document.getElementsByClassName('handler_btn')[1];
@@ -122,6 +120,8 @@ const appData = {
       rangeValue.textContent = inputRange.value + "%";
       appData.rollback = rangeValue.textContent;
 
+      // меняем сумму с учётом отката в зависимости от положения ползунка
+      totalCountRollback.value = appData.fullPrice - (appData.fullPrice * (parseFloat(appData.rollback) / 100));
    },
 
    addPrices: function () {
@@ -142,6 +142,7 @@ const appData = {
 
       // стоимость с учётом отката
       totalCountRollback.value = appData.fullPrice - (appData.fullPrice * (parseFloat(appData.rollback) / 100));
+
 
 
       // В методе addPrices посчитать общее количество экранов и вывести на страницу итоговое значение в поле с подписью "Количество экранов"
