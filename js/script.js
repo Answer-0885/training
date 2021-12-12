@@ -141,7 +141,7 @@ const appData = {
       appData.fullPrice = +appData.screenPrice + appData.servicePricesNumber + appData.servicePricesPercent;
 
       // стоимость с учётом отката
-      totalCountRollback.value = appData.fullPrice - (appData.fullPrice * (parseFloat(appData.rollback) / 100));
+      totalCountRollback.value = appData.fullPrice - (appData.fullPrice * (parseInt(appData.rollback) / 100));
 
 
 
