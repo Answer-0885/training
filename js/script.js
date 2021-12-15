@@ -60,6 +60,10 @@ const appData = {
          if (index !== 0) {
             screen.remove();
          }
+         // после сброса пушим screens[0], чтобы всё работало корректно
+         let newScreen = screens[0];
+         screens = [];
+         screens.push(newScreen);
 
          select.disabled = false;
          select.value = "";
