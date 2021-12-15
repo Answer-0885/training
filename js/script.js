@@ -20,6 +20,20 @@ let totalCountRollback = document.getElementsByClassName('total-input')[4];
 
 let screens = document.querySelectorAll('.screen');
 
+const cmsOpen = document.querySelector('#cms-open');
+const hiddenCmsVariants = document.querySelector('.hidden-cms-variants');
+const mainControlsInput = hiddenCmsVariants.querySelector('.main-controls__input');
+const cmsSelect = hiddenCmsVariants.querySelector('#cms-select');
+
+//const other = hiddenCmsVariants.querySelectorAll('option')[2];
+const wordPress = hiddenCmsVariants.querySelectorAll('option')[1];
+
+
+console.log(hiddenCmsVariants);
+
+console.log(mainControlsInput);
+console.dir(wordPress);
+
 
 const appData = {
    title: '',
@@ -40,10 +54,28 @@ const appData = {
       buttonPlus.addEventListener('click', this.addScreenBlock.bind(appData));
       inputRange.addEventListener('input', this.inputRange.bind(appData));
       resetBtn.addEventListener('click', this.reset.bind(appData));
-
+      cmsOpen.addEventListener('click', this.cmsOpen.bind(appData));
+      cmsSelect.addEventListener('change', this.mainControlsInput.bind(appData));
+      cmsSelect.addEventListener('change', this.wordPress.bind(appData));
    },
    addTitle: function () {
       document.title = title.textContent;
+   },
+   cmsOpen: function () {
+      hiddenCmsVariants.style.display = 'flex';
+   },
+   // если выведено поле другие, то добавляем поле mainControlsInput
+   mainControlsInput: function (e) {
+      if (e.target.value === 'other') {
+         mainControlsInput.style.display = 'flex';
+      } else {
+         mainControlsInput.style.display = 'none';
+      }
+   },
+   wordPress: function (e) {
+      if (e.target.value === '50') {
+         totalCountRollback.value = totalCountRollback.value * 1.5;
+      }
    },
    start: function () {
       this.addScreens()
@@ -80,6 +112,8 @@ const appData = {
          totalCountRollback.value = 0;
          rangeValue.textContent = 0 + "%";
          inputRange.value = 0;
+         hiddenCmsVariants.style.display = 'none'
+         hiddenCmsVariants.style.checkbox = false;
       });
    },
    showResult: function () {
@@ -152,7 +186,12 @@ const appData = {
       this.rollback = rangeValue.textContent;
 
       // меняем сумму с учётом отката в зависимости от положения ползунка
-      totalCountRollback.value = this.fullPrice - (this.fullPrice * (parseInt(this.rollback) / 100));
+      // если выбран пункт wordPress то итоговую сумму увеличиваем на 50%
+      if (wordPress.value === '50') {
+         totalCountRollback.value = 1.5 * (this.fullPrice - (this.fullPrice * (parseInt(this.rollback) / 100)));
+      } else {
+         totalCountRollback.value = this.fullPrice - (this.fullPrice * (parseInt(this.rollback) / 100));
+      }
    },
 
    addPrices: function () {
