@@ -24,17 +24,10 @@ const cmsOpen = document.querySelector('#cms-open');
 const hiddenCmsVariants = document.querySelector('.hidden-cms-variants');
 const mainControlsInput = hiddenCmsVariants.querySelector('.main-controls__input');
 const cmsSelect = hiddenCmsVariants.querySelector('#cms-select');
-
-//const other = hiddenCmsVariants.querySelectorAll('option')[2];
 const wordPress = hiddenCmsVariants.querySelectorAll('option')[1];
 
 
-console.log(hiddenCmsVariants);
-
-console.log(mainControlsInput);
-console.dir(wordPress);
-
-
+// Создаём глобальны объект
 const appData = {
    title: '',
    screens: [],
@@ -72,49 +65,17 @@ const appData = {
          mainControlsInput.style.display = 'none';
       }
    },
-   wordPress: function (e) {
-      if (e.target.value === '50') {
+   wordPress: function () {
+      if (cmsSelect.value == '50') {
          totalCountRollback.value = totalCountRollback.value * 1.5;
       }
    },
+   //Нажимаем на кнопку Рассчитать
    start: function () {
       this.addScreens()
       this.addServices()
       this.addPrices();
       this.showResult()
-   },
-   reset: function () {
-      const select = document.querySelector('select');
-      const input = document.querySelector('input');
-
-      // удаляем все дополнительные поля с экранами screens
-      screens.forEach((screen, index) => {
-         if (index !== 0) {
-            screen.remove();
-         }
-         // после сброса пушим screens[0], чтобы всё работало корректно
-         let newScreen = screens[0];
-         screens = [];
-         screens.push(newScreen);
-
-         select.disabled = false;
-         select.value = "";
-         input.disabled = false;
-         input.value = "";
-
-         buttonPlus.disabled = false;
-         startBtn.style.display = 'flex'; // кнопка Рассчитать исчезает после нажатия
-         resetBtn.style.display = 'none';
-         total.value = 0;
-         totalCount.value = 0;
-         totalCountOther.value = 0;
-         fullTotalCount.value = 0;
-         totalCountRollback.value = 0;
-         rangeValue.textContent = 0 + "%";
-         inputRange.value = 0;
-         hiddenCmsVariants.style.display = 'none'
-         hiddenCmsVariants.style.checkbox = false;
-      });
    },
    showResult: function () {
       total.value = this.screenPrice;
@@ -129,13 +90,12 @@ const appData = {
          const input = screen.querySelector('input');
          const selectName = select.options[select.selectedIndex].textContent;
 
-
+         // Проверка на пустые поля, если значения в select и input не записаны, то блоируем все вычисления
          if (select.value === "" || input.value === "") {
-            startBtn.disabled = true;
-            alert('Выберите тип экрана и укажите их количество')
+            this.start() = false;
             // кнопка расчитать не блокируется при первом предупреждении
             if (select.value !== "" || input.value !== "") {
-               startBtn.disabled = false;
+               this.start() = true;
             }
          } else {
             select.disabled = true;
@@ -143,9 +103,17 @@ const appData = {
             buttonPlus.disabled = true;
             startBtn.style.display = 'none'; // кнопка Рассчитать исчезает после нажатия
             resetBtn.style.display = 'flex';
+
+            otherItemsPercent.forEach((item) => {
+               item.querySelector('input[type=checkbox]').disabled = true;
+            });
+            otherItemsNumber.forEach((item) => {
+               item.querySelector('input[type=checkbox]').disabled = true;
+            });
+            if (select.value === "" && input.value === "") {
+               this.reset()
+            };
          }
-
-
          this.screens.push({
             id: index,
             name: selectName,
@@ -175,7 +143,7 @@ const appData = {
          }
       })
    },
-   // здесь добавляется очищенная новая строка с экранами и их количеством
+   // здесь, после нажатия на "+" добавляется очищенная новая строка с экранами и их количеством
    addScreenBlock: function () {
       const cloneScreen = screens[0].cloneNode(true);
       cloneScreen.querySelector('input').value = '';
@@ -188,7 +156,7 @@ const appData = {
 
       // меняем сумму с учётом отката в зависимости от положения ползунка
       // если выбран пункт wordPress то итоговую сумму увеличиваем на 50%
-      if (wordPress.value === '50') {
+      if (cmsSelect.value == '50') {
          totalCountRollback.value = 1.5 * (this.fullPrice - (this.fullPrice * (parseInt(this.rollback) / 100)));
       } else {
          totalCountRollback.value = this.fullPrice - (this.fullPrice * (parseInt(this.rollback) / 100));
@@ -218,7 +186,66 @@ const appData = {
       totalCount.value = this.screens.reduce((a, b) => a + b.count, 0);
 
    },
+   reset: function () {
+      const select = document.querySelector('select');
+      const input = document.querySelector('input');
 
+      // удаляем все дополнительные поля с экранами screens
+      screens.forEach((screen, index) => {
+         if (index !== 0) {
+            screen.remove();
+         };
+         // после сброса пушим screens[0], чтобы всё работало корректно
+         let newScreen = screens[0];
+         screens = [];
+         screens.push(newScreen);
+      });
+
+      select.disabled = false;
+      select.value = "";
+      input.disabled = false;
+      input.value = "";
+
+      // screenPrice.value = 0;
+      // servicePricesPercent.value = 0;
+      // servicePricesNumber.value = 0;
+      // fullPrice.value = 0;
+
+      buttonPlus.disabled = false;
+      startBtn.style.display = 'flex'; // кнопка Рассчитать исчезает после нажатия
+      resetBtn.style.display = 'none';
+      total.value = 0;
+      totalCount.value = 0;
+      totalCountOther.value = 0;
+      fullTotalCount.value = 0;
+      totalCountRollback.value = 0;
+      rangeValue.textContent = 0 + "%";
+      inputRange.value = 0;
+      hiddenCmsVariants.style.display = 'none'
+      cmsOpen.checked = false;
+      this.screenPrice = 0;
+      this.rollback = 0;
+      this.fullPrice = 0;
+      this.ServicePricesPercent = 0;
+      this.ServicePricesNumber = 0;
+      this.servicePercentPrice = 0;
+      this.screens.splice(0);
+
+      // убираем чекбоксы и делаем эти поля активными
+      otherItemsPercent.forEach((item) => {
+         item.querySelector('input[type=checkbox]').checked = false;
+         item.querySelector('input[type=checkbox]').disabled = false;
+         const label = item.querySelector('label');
+         this.servicesPercent[label.textContent] = 0;
+      });
+
+      otherItemsNumber.forEach((item) => {
+         item.querySelector('input[type=checkbox]').checked = false;
+         item.querySelector('input[type=checkbox]').disabled = false;
+         const label = item.querySelector('label');
+         this.servicesNumber[label.textContent] = 0;
+      });
+   },
 };
 
 appData.init();
