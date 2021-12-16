@@ -175,10 +175,11 @@ const appData = {
          }
       })
    },
+   // здесь добавляется очищенная новая строка с экранами и их количеством
    addScreenBlock: function () {
       const cloneScreen = screens[0].cloneNode(true);
-
-      screens[screens.length - 1].after(cloneScreen)
+      cloneScreen.querySelector('input').value = '';
+      screens[screens.length - 1].after(cloneScreen);
    },
    // Повесить на input[type = range](в блоке с классом.rollback) обработчик события.При перемещении ползунка значение под ним(в элементе span) должно меняться.А так же это значение должно заноситься в свойство rollback нашего объекта для последующих расчетов!
    inputRange: function () {
